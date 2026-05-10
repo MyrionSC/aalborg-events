@@ -1,0 +1,16 @@
+given html snippet from url https://studenterhuset.dk/:
+
+SNIPPET
+
+write nodejs script that scrapes  for events and write to sqlite database table with ddl
+
+CREATE TABLE "events"
+(
+title TEXT not null,
+id TEXT not null,
+url TEXT not null,
+description TEXT not null,
+time_start TEXT not null,
+type TEXT not null,
+venue_name TEXT not null
+)
