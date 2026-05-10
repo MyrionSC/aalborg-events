@@ -15,17 +15,22 @@ async function scrapeEvents() {
             const $item = $(element).find('.eventlist__item');
             const $wrapper = $item.find('.eventlist__wrapper');
 
-            const id = $item.attr('id') || '';
             const title = $wrapper.find('.eventlist__title a').text().trim();
             const url = $wrapper.find('.eventlist__title a').attr('href');
+            const id = url;
             const fullUrl = url ? `https://studenterhuset.dk${url}` : '';
             const genre = $(element).attr('data-genre') || '';
             const date = $wrapper.find('.eventlist__date').text().trim();
             const startTime = $wrapper.find('.eventlist__starttime').text().replace('Start:', '').trim();
             const doors = $wrapper.find('.eventlist__doors').text().replace('[Døre:', '').replace(']', '').trim();
 
-            // Combine date and start time
-            const timeStart = `${date} ${startTime}`;
+            // Parse date (DD.MM.YY) and time (HH:mm) to ISO format
+            let timeStart = '';
+            if (date && startTime) {
+                const [day, month, year] = date.split('.');
+                const fullYear = year.length === 2 ? `20${year}` : year;
+                timeStart = `${fullYear}-${month}-${day}T${startTime}:00`;
+            }
 
             if (title && url) {
                 events.push({
@@ -57,6 +62,23 @@ function initDatabase() {
                 resolve(db);
             }
         });
+    });
+}
+
+function deleteEventsByVenue(db, venueName) {
+    return new Promise((resolve, reject) => {
+        db.run(
+            `DELETE FROM events WHERE venue_name = ?`,
+            [venueName],
+            function (err) {
+                if (err) {
+                    reject(err);
+                } else {
+                    console.log(`Deleted ${this.changes} events for venue: ${venueName}`);
+                    resolve();
+                }
+            }
+        );
     });
 }
 
@@ -107,7 +129,9 @@ async function main() {
         console.log(`Found ${events.length} events`);
 
         db = await initDatabase();
-        // await createTable(db);
+
+        await deleteEventsByVenue(db, 'Studenterhuset');
+
         await insertEvents(db, events);
 
         console.log('Done!');
