@@ -1,4 +1,7 @@
-given html snippet from url https://studenterhuset.dk/:
+
+in the style of file studenterhuset-scraper.js
+
+given html snippet from url URL:
 
 SNIPPET
 
