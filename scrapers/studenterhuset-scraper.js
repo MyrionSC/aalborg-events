@@ -57,6 +57,7 @@ async function main() {
     try {
         console.log('Scraping events from', URL);
         const events = await scrapeEvents();
+        if (events.length === 0) throw new Error("No events, scraper probably broke")
         console.log(`Found ${events.length} events`);
 
         db = await initDatabase();
