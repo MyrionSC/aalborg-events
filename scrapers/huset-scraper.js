@@ -98,4 +98,7 @@ async function main() {
     }
 }
 
-main();
+module.exports = { scrapeEvents, VENUE_NAME: 'Huset' };
+if (require.main === module) {
+    main();
+}
