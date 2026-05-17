@@ -1,0 +1,1 @@
+scp frontend/events.html marand:/var/www/marand/aalborg-events
