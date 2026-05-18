@@ -2,7 +2,7 @@ const sqlite3 = require('sqlite3').verbose();
 const fs = require('fs');
 const path = require('path');
 
-const DB_PATH = 'C:\\Users\\Marph\\source\\aalvents\\events.sqlite';
+const DB_PATH = 'events.sqlite';
 const OUTPUT_PATH = path.join(__dirname, 'events.html');
 
 async function generateHtml() {
@@ -19,7 +19,7 @@ async function generateHtml() {
 
     try {
         const rows = await getEvents();
-        
+
         // Group events by date
         const groupedEvents = {};
         rows.forEach(event => {

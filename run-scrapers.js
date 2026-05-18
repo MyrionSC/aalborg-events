@@ -1,8 +1,8 @@
-const { initDatabase, deleteEventsByVenue, insertEvents } = require('./db-helper');
-const frydScraper = require('./1000fryd-scraper');
-const husetScraper = require('./huset-scraper');
-const musikkenshusScraper = require('./musikkenshus-scraper');
-const studenterhusetScraper = require('./studenterhuset-scraper');
+const { initDatabase, deleteEventsByVenue, insertEvents } = require('./scrapers/db-helper');
+const frydScraper = require('./scrapers/1000fryd-scraper');
+const husetScraper = require('./scrapers/huset-scraper');
+const musikkenshusScraper = require('./scrapers/musikkenshus-scraper');
+const studenterhusetScraper = require('./scrapers/studenterhuset-scraper');
 
 const scrapers = [
     frydScraper,
