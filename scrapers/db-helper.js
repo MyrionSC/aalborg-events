@@ -9,7 +9,24 @@ function initDatabase() {
                 reject(err);
             } else {
                 console.log('Connected to SQLite database');
-                resolve(db);
+                db.run(`
+                    CREATE TABLE IF NOT EXISTS "events"
+                    (
+                        id          TEXT not null,
+                        title       TEXT not null,
+                        url         TEXT not null,
+                        description TEXT not null,
+                        time_start  TEXT not null,
+                        type        TEXT not null,
+                        venue_name  TEXT not null
+                    )
+                `, (createErr) => {
+                    if (createErr) {
+                        reject(createErr);
+                    } else {
+                        resolve(db);
+                    }
+                });
             }
         });
     });
