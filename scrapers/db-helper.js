@@ -1,6 +1,6 @@
 const sqlite3 = require('sqlite3').verbose();
 
-const DB_PATH = '../events.sqlite';
+const DB_PATH = 'events.sqlite';
 
 function initDatabase() {
     return new Promise((resolve, reject) => {
