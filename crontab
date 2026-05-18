@@ -1,0 +1,1 @@
+0 2 * * * (cd ~/aalborg-events && node run-scrapers.js && node generate_static_event_list_html.js && /usr/bin/cp events.html /var/www/marand/aalborg-events/index.html)
