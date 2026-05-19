@@ -5,19 +5,33 @@ const { initDatabase, deleteEventsByVenue, insertEvents } = require('./db-helper
 const BASE_URL = 'https://skraaen.dk/arrangementer/?sf_data=results&sf_paged=';
 const VENUE_NAME = 'Skråen';
 
+async function scrapeEventTime(url) {
+    try {
+        const response = await axios.get(url);
+        const $ = cheerio.load(response.data);
+        const timeText = $('.event-info h2').next('div').text().trim(); // "Kl. 20:00"
+        const timeMatch = timeText.match(/(\d{2}:\d{2})/);
+        return timeMatch ? timeMatch[1] : '00:00';
+    } catch (error) {
+        console.error(`Error scraping event time from ${url}:`, error.message);
+        return '00:00';
+    }
+}
+
 async function scrapePage(page) {
     const url = `${BASE_URL}${page}`;
     try {
         const response = await axios.get(url);
         const $ = cheerio.load(response.data);
+        const eventElements = $('article.event-item').toArray();
         const events = [];
 
-        $('article.event-item').each((index, element) => {
+        for (const element of eventElements) {
             const $item = $(element);
             
             const title = $item.find('.event-info h2 a').text().trim();
-            const url = $item.find('.event-info h2 a').attr('href');
-            const id = url ? url.split('/').filter(Boolean).pop() : null;
+            const eventUrl = $item.find('.event-info h2 a').attr('href');
+            const id = eventUrl ? eventUrl.split('/').filter(Boolean).pop() : null;
             
             const dateStr = $item.find('.event-type h4').first().text().trim(); // 20.05.2026
             const price = $item.find('.event-price h4').text().trim();
@@ -25,27 +39,30 @@ async function scrapePage(page) {
             
             const eventType = $item.find('.event-item-label .capitalize').text().trim();
 
-            // Parse date (DD.MM.YYYY) to ISO format
+            console.log(`  Scraping details for: ${title}`);
+            const startTimeStr = eventUrl ? await scrapeEventTime(eventUrl) : '00:00';
+
+            // Parse date (DD.MM.YYYY) and time (HH:mm) to ISO format
             let timeStart = '';
             if (dateStr) {
                 const [day, month, year] = dateStr.split('.');
                 if (day && month && year) {
-                    timeStart = `${year}-${month}-${day}T00:00:00`;
+                    timeStart = `${year}-${month}-${day}T${startTimeStr}:00`;
                 }
             }
 
-            if (title && url) {
+            if (title && eventUrl) {
                 events.push({
-                    id: id || url,
+                    id: id || eventUrl,
                     title,
-                    url,
+                    url: eventUrl,
                     description: `Pris: ${price}. Status: ${status}. Dag: ${eventType}`,
                     time_start: timeStart,
                     type: eventType,
                     venue_name: VENUE_NAME
                 });
             }
-        });
+        }
 
         return events;
     } catch (error) {
