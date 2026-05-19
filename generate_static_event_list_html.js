@@ -5,6 +5,10 @@ const path = require('path');
 const DB_PATH = 'events.sqlite';
 const OUTPUT_PATH = path.join(__dirname, 'events.html');
 
+function capitalizeFirstLetter(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
 async function generateHtml() {
     const db = new sqlite3.Database(DB_PATH);
 
@@ -52,11 +56,26 @@ async function generateHtml() {
 <body>
 `;
 
-        const today = new Date().toISOString().split("T")[0] // 2025-05-12
+        const today = new Date()
+        const todayIso = today.toISOString().split("T")[0]; // 2025-05-12
+        today.setDate(today.getDate() + 1)
+        const tomorrowIso = today.toISOString().split("T")[0];
 
         for (const date in groupedEvents) {
+            let formattedDate = new Date(date).toLocaleDateString('da-DK', {
+                weekday: 'long',
+                month: 'long',
+                day: 'numeric'
+            });
+            formattedDate = capitalizeFirstLetter(formattedDate);
+            if (date === todayIso) {
+                formattedDate = 'I dag - ' + formattedDate
+            } else if (date === tomorrowIso) {
+                formattedDate = 'I morgen - ' + formattedDate
+            }
+
             html += `    <div class="date-group">\n`;
-            html += `        <h2 class="date-header">${date === today ? 'I dag' : date}</h2>\n`;
+            html += `        <h2 class="date-header">${formattedDate}</h2>\n`;
             groupedEvents[date].forEach(event => {
                 const time = event.time_start.includes('T') ? event.time_start.split('T')[1].substring(0, 5) : event.time_start;
                 html += `        <div class="event-card">
