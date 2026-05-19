@@ -3,12 +3,14 @@ const frydScraper = require('./scrapers/1000fryd-scraper');
 const husetScraper = require('./scrapers/huset-scraper');
 const musikkenshusScraper = require('./scrapers/musikkenshus-scraper');
 const studenterhusetScraper = require('./scrapers/studenterhuset-scraper');
+const skraaenScraper = require('./scrapers/skraaen-scraper');
 
 const scrapers = [
     frydScraper,
     husetScraper,
     musikkenshusScraper,
-    studenterhusetScraper
+    studenterhusetScraper,
+    skraaenScraper
 ];
 
 async function runAll() {
