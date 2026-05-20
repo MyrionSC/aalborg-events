@@ -14,7 +14,9 @@ async function generateHtml() {
 
     const getEvents = () => {
         return new Promise((resolve, reject) => {
-            db.all('SELECT * FROM events ORDER BY time_start ASC', (err, rows) => {
+            // sometimes venues don't update their page in time and we get old events so don't generate for those
+            const today = new Date().toISOString().split('T')[0];
+            db.all('SELECT * FROM events WHERE date(time_start) >= date(?) ORDER BY time_start ASC', [today], (err, rows) => {
                 if (err) reject(err);
                 else resolve(rows);
             });
