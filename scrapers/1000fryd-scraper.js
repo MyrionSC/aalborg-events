@@ -39,8 +39,11 @@ async function scrapeEvents() {
             const price = $el.find('.calendar_price').text().trim();
             let title = $el.find('.col:not(.text-center)').text().trim();
 
-            // Rengør titel (fjerner overskydende whitespace og linjeskift)
-            title = title.replace(/\s+/g, ' ');
+            // Clean title: remove leading numbers and prices that might be scraped incorrectly
+            // Often matches "21 FREE ...", "21 80 kr ...", "21 TBA ..."
+            title = title.replace(/^\d+\s+(FREE|\d+\s+kr)\s+/, '');
+            title = title.replace(/^\d+\s+/, '');
+            title = title.replace(/\s+/g, ' ').trim();
 
             const monthNum = monthsMap[currentMonth] || '01';
 

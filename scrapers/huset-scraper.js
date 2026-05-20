@@ -43,8 +43,15 @@ async function scrapeEvents() {
                         const hour = match[3];
                         const minute = match[4];
                         
-                        // Current year from system or assuming 2026 based on context
-                        const year = '2026'; 
+                        // Current year from system
+                        const now = new Date();
+                        let year = now.getFullYear();
+                        
+                        // If it's December and we see January/February, it's probably next year
+                        if (now.getMonth() >= 10 && parseInt(month) <= 2) {
+                            year++;
+                        }
+                        
                         timeStart = `${year}-${month}-${day}T${hour}:${minute}:00`;
                     }
                 } catch (e) {

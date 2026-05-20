@@ -39,11 +39,11 @@ async function generateHtml() {
 
         let html = `
 <!DOCTYPE html>
-<html lang="en">
+<html lang="da">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aalborg events</title>
+    <title>Aalborg Events</title>
     <style>
         body { font-family: Arial, sans-serif; line-height: 1.6; max-width: 800px; margin: 0 auto; padding: 20px; background-color: #f4f4f4; }
         h1 { text-align: center; color: #333; }
@@ -53,6 +53,7 @@ async function generateHtml() {
         .event-title { margin-top: 0; color: #007BFF; text-decoration: none; font-size: 1.2em; display: block; }
         .event-details { font-size: 0.9em; color: #666; margin-top: 5px; }
         .event-description { margin-top: 10px; }
+        .footer { text-align: center; font-size: 0.8em; color: #888; margin-top: 40px; }
     </style>
 </head>
 <body>
@@ -83,8 +84,8 @@ async function generateHtml() {
                 html += `        <div class="event-card">
             <a href="${event.url}" class="event-title">${event.title}</a>
             <div class="event-details">
-                <strong>Time:</strong> ${time} | 
-                <strong>Venue:</strong> ${event.venue_name} | 
+                <strong>Tid:</strong> ${time} | 
+                <strong>Sted:</strong> ${event.venue_name} | 
                 <strong>Type:</strong> ${event.type}
             </div>
             <div class="event-description">${event.description}</div>
@@ -93,7 +94,11 @@ async function generateHtml() {
             html += `    </div>\n`;
         }
 
+        const generationTime = new Date().toLocaleString('da-DK');
         html += `
+    <div class="footer">
+        Opdateret: ${generationTime}
+    </div>
 </body>
 </html>
 `;
