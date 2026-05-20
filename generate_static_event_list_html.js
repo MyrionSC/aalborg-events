@@ -9,6 +9,17 @@ function capitalizeFirstLetter(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
+function getVenueColor(venueName) {
+    const venueColors = {
+        '1000Fryd': '#c8ab6c',
+        'Huset': '#262626',
+        'Musikkens Hus': '#da291c',
+        'Skråen': '#aa0000',
+        'Studenterhuset': '#5c75b0'
+    };
+    return venueColors[venueName] || '#000000';
+}
+
 async function generateHtml() {
     const db = new sqlite3.Database(DB_PATH);
 
@@ -50,8 +61,8 @@ async function generateHtml() {
         .date-group { margin-bottom: 30px; }
         .date-header { background-color: #333; color: #fff; padding: 10px; border-radius: 5px; margin-bottom: 10px; }
         .event-card { background: #fff; padding: 15px; margin-bottom: 10px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .event-title { margin-top: 0; color: #007BFF; text-decoration: none; font-size: 1.2em; display: block; }
-        .event-details { font-size: 0.9em; color: #666; margin-top: 5px; }
+        .event-title { margin-top: 0; color: #007BFF; text-decoration: none; font-size: 1.3em; display: block; }
+        .event-details { font-size: 0.95em; color: #333; margin-top: 5px; }
         .event-description { margin-top: 10px; }
         .footer { text-align: center; font-size: 0.8em; color: #888; margin-top: 40px; }
     </style>
@@ -81,12 +92,13 @@ async function generateHtml() {
             html += `        <h2 class="date-header">${formattedDate}</h2>\n`;
             groupedEvents[date].forEach(event => {
                 const time = event.time_start.includes('T') ? event.time_start.split('T')[1].substring(0, 5) : event.time_start;
+                const venueColor = getVenueColor(event.venue_name);
                 html += `        <div class="event-card">
             <a href="${event.url}" class="event-title">${event.title}</a>
             <div class="event-details">
-                <strong>Tid:</strong> ${time} | 
-                <strong>Sted:</strong> ${event.venue_name} | 
-                <strong>Type:</strong> ${event.type}
+                <span style="color: ${venueColor}; font-weight: bold;">${event.venue_name}</span> | 
+                ${time}
+                ${event.type ? ' | ' + event.type : ''}
             </div>
             <div class="event-description">${event.description}</div>
         </div>\n`;

@@ -37,7 +37,7 @@ async function scrapePage(page) {
             const price = $item.find('.event-price h4').text().trim();
             const status = $item.find('.status').text().trim();
             
-            const eventType = $item.find('.event-item-label .capitalize').text().trim();
+            // const eventType = $item.find('.event-item-label .capitalize').text().trim();
 
             console.log(`  Scraping details for: ${title}`);
             const startTimeStr = eventUrl ? await scrapeEventTime(eventUrl) : '00:00';
@@ -56,9 +56,9 @@ async function scrapePage(page) {
                     id: id || eventUrl,
                     title,
                     url: eventUrl,
-                    description: `Pris: ${price}. Status: ${status}. Dag: ${eventType}`,
+                    description: `Pris: ${price}. Status: ${status}`,
                     time_start: timeStart,
-                    type: eventType,
+                    type: '',
                     venue_name: VENUE_NAME
                 });
             }
