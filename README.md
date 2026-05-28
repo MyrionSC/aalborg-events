@@ -8,16 +8,9 @@ currently scrapers for:
 - Musikkens Hus
 - Skråen
 - Studenterhuset
-
+- Comedy Club
 
 === TODO: 
-
-skovdalen?
-
-https://www.aalborgcomedyclub.dk/
-
-
-
 
 === Development
 

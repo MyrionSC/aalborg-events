@@ -32,7 +32,10 @@ async function scrapePage(page) {
             const title = $item.find('.event-info h2 a').text().trim();
             const eventUrl = $item.find('.event-info h2 a').attr('href');
             const id = eventUrl ? eventUrl.split('/').filter(Boolean).pop() : null;
-            
+            if (events.some(event => event.id === id)) {
+                continue;
+            }
+
             const dateStr = $item.find('.event-type h4').first().text().trim(); // 20.05.2026
             const price = $item.find('.event-price h4').text().trim();
             const status = $item.find('.status').text().trim();
