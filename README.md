@@ -10,6 +10,15 @@ currently scrapers for:
 - Studenterhuset
 
 
+=== TODO: 
+
+skovdalen?
+
+https://www.aalborgcomedyclub.dk/
+
+
+
+
 === Development
 
 I use node 22.11.0. I suggest using [nvm](https://github.com/nvm-sh/nvm) to manage your node version.

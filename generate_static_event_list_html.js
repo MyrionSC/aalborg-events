@@ -15,7 +15,8 @@ function getVenueColor(venueName) {
         'Huset': '#262626',
         'Musikkens Hus': '#da291c',
         'Skråen': '#aa0000',
-        'Studenterhuset': '#5c75b0'
+        'Studenterhuset': '#5c75b0',
+        'Comedy Club': '#d2a34a'
     };
     return venueColors[venueName] || '#000000';
 }
