@@ -12,6 +12,8 @@ currently scrapers for:
 
 === TODO: 
 
+Go through https://www.bandsintown.com/c/aalborg-denmark/this-month/genre/all-genres and add missing venues
+
 === Development
 
 I use node 22.11.0. I suggest using [nvm](https://github.com/nvm-sh/nvm) to manage your node version.
